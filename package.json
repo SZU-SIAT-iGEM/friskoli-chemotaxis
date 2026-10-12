@@ -1,0 +1,45 @@
+{
+  "name": "friskoli-chemotaxis",
+  "private": true,
+  "version": "1.0.0",
+  "description": "A bilingual chemotaxis board game for science education, by Friskoli / SZU-SIAT iGEM.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SZU-SIAT-iGEM/friskoli-chemotaxis.git"
+  },
+  "bugs": {
+    "url": "https://github.com/SZU-SIAT-iGEM/friskoli-chemotaxis/issues"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "check": "tsc --noEmit",
+    "validate:maps": "node scripts/validate-world.cjs",
+    "test": "node scripts/test-rules.cjs",
+    "balance": "node scripts/balance.cjs",
+    "test:browser": "node scripts/qa-runner.mjs",
+    "release:package": "node scripts/package-release.mjs",
+    "verify": "npm run check && npm test && npm run validate:maps && npm run build"
+  },
+  "dependencies": {
+    "react": "19.2.6",
+    "react-dom": "19.2.6"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "4.1.17",
+    "@types/node": "22.19.17",
+    "@types/react": "19.2.7",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "5.1.1",
+    "playwright": "1.64.0",
+    "tailwindcss": "4.1.17",
+    "typescript": "5.9.3",
+    "vite": "7.3.7"
+  }
+}

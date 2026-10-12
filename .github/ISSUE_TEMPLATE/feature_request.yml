@@ -1,0 +1,10 @@
+name: Feature request
+description: Suggest an improvement to educational play or usability.
+body:
+  - type: textarea
+    id: need
+    attributes:
+      label: Use case and proposed behavior
+      description: Describe the player or contributor need and the concrete change.
+    validations:
+      required: true

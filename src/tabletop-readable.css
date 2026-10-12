@@ -1,0 +1,235 @@
+/* The board is the playing surface; the right-hand margin is for physical dice. */
+:root{--dir-1:#087f72;--dir-2:#1765bb;--dir-3:#8153a5;--dir-4:#b54847;--dir-5:#9b6905;--dir-6:#577c20}
+[data-theme=dark]{--dir-1:#49dcbb;--dir-2:#74b5ff;--dir-3:#c6a0ee;--dir-4:#ff9991;--dir-5:#f5c05b;--dir-6:#bfdb7c}
+.app.is-booth-display{max-width:1260px}
+.is-booth-display .board-viewport{background:radial-gradient(ellipse at 35% 50%,var(--rich),transparent 61%)}
+.is-booth-display .board-viewport:before{inset:7% 345px 7% 0;border-radius:45%;opacity:.3}
+.is-booth-display .board-viewport .board,.is-booth-display .board-viewport:has(.is-lesson) .board{top:0;left:calc((100% - 340px)/2);width:calc(100% - 340px);height:100%;overflow:hidden}
+.tabletop-objects .field-readout{top:14px;left:auto;right:16px;width:300px;max-width:none;align-items:flex-start;gap:12px}
+.tabletop-objects .field-readout strong{font-size:18px;line-height:1.4}
+.tabletop-objects .field-readout strong b{font-size:25px}
+.tabletop-objects .field-readout span:not(.field-orbit){font-size:13px;line-height:1.6;margin-top:4px}
+.tabletop-objects .field-orbit{margin-top:5px;width:25px;height:25px}
+.tabletop-objects .probability-line{top:96px;left:auto;right:16px;width:300px;text-align:left}
+.probability-line>small{font-size:12px;letter-spacing:0;line-height:1.5;margin-bottom:10px;color:var(--ink)}
+.probability-line>div{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.probability-line>div>.direction-reading{display:flex;flex-direction:column;gap:7px;align-items:center;position:relative;border-bottom:2px solid transparent;padding-bottom:4px;transition:transform .2s,border-color .2s}
+.probability-line .direction-reading.selected{transform:translateY(-3px);border-color:var(--direction)}
+.direction-key{display:flex;align-items:center;gap:3px;color:var(--direction)}
+.probability-line .direction-key b{display:grid;place-items:center;font-size:14px;font-weight:750;color:var(--direction);border:1.5px solid currentColor;width:23px;height:23px;border-radius:50%}
+.direction-key i{font-style:normal;font-size:17px;font-weight:700}
+.probability-line .direction-probability{font-size:14px;letter-spacing:-.035em;color:var(--ink)}
+.probability-line .inward-risk:after{content:'×';position:absolute;right:-3px;top:-8px;color:var(--repel-line);font-size:12px}
+.tabletop-objects .lesson-ribbon{top:198px;left:auto;right:16px;width:300px;max-width:none;padding:0 0 0 14px;display:block;border-left:3px solid var(--green)}
+.tabletop-objects .lesson-step{font-size:12px}
+.tabletop-objects .lesson-ribbon strong{font-size:17px;line-height:1.5;margin:6px 0}
+.tabletop-objects .lesson-ribbon p{font-size:14px;line-height:1.7;color:var(--ink)}
+.tabletop-objects .lesson-ribbon button{position:static;font-size:12px;min-height:32px;margin-top:6px}
+.tabletop-objects .table-dock{left:auto;right:16px;bottom:26px;top:auto;transform:none;width:300px;height:auto;min-height:0;display:flex;flex-direction:column;gap:14px;padding:0}
+.action-cue{display:flex;align-items:center;gap:10px;align-self:flex-start;color:var(--ink);font-size:21px;line-height:1.3;animation:cue-arrive .4s ease-out both}
+.action-cue>span{font-size:28px;color:var(--green)}
+.awaiting-roll .action-cue>span{animation:cue-nudge .7s ease-in-out 3}
+.tabletop-objects .physical-tray{width:100%;flex:none;min-height:82px}
+.tabletop-objects .roll-surface{min-height:116px;padding:12px 0 0;gap:17px;cursor:grab}
+.tabletop-objects .roll-surface.held{cursor:grabbing}
+.tabletop-objects .idle-dice,.tabletop-objects .rolled-dice{display:flex;gap:18px;flex-wrap:nowrap;max-width:none}
+.tabletop-objects .physical-die{--size:50px}
+.tabletop-objects .cube-side{padding:10px;gap:4px;border-color:color-mix(in srgb,var(--face-color) 48%,#bfcfc6);border-top:3px solid var(--face-color)}
+.cube-side .cube-pip{background:var(--face-color);width:6px;height:6px}
+.cube-side{--dir-1:#087f72;--dir-2:#1765bb;--dir-3:#8153a5;--dir-4:#b54847;--dir-5:#9b6905;--dir-6:#577c20}
+.tabletop-objects .dice-invitation{font-size:13px!important;line-height:1.5;color:var(--ink);white-space:normal;text-align:center}
+.tabletop-objects .rolled-token{min-width:54px;min-height:87px;padding:7px 2px;gap:14px}
+.tabletop-objects .rolled-token>span:last-child{font-size:14px;font-weight:750;color:var(--direction,var(--muted))}
+.tabletop-objects .rolled-token.selected:after{background:var(--direction)}
+.tabletop-objects .booth-command{width:100%;flex:none;min-height:60px;text-align:left}
+.tabletop-objects .booth-command p,.tabletop-objects .booth-command .booth-choose-hint{font-size:15px;line-height:1.6}
+.tabletop-objects .booth-prediction strong{font-size:16px;line-height:1.6}
+.tabletop-objects .booth-prediction span,.tabletop-objects .booth-choose-hint span,.tabletop-objects .direct-hint{font-size:13px;line-height:1.6}
+.tabletop-objects .direct-hint{padding:0}
+.tabletop-objects .booth-confirm{float:none;margin:5px 0 0;font-size:14px;min-height:36px;padding:3px 0}
+.tabletop-objects .cancel-reason{font-size:12px;line-height:1.5}
+.tabletop-objects .table-rescue{font-size:14px;min-height:40px}
+.tabletop-objects .bonus-mark{font-size:13px;right:-12px;top:-13px}
+.is-booth-display .legend{font-size:12px;gap:18px;min-height:30px}
+.is-booth-display .board-score>span{font-size:14px}
+.is-booth-display .combo-grace{font-size:11px}
+.is-booth-display .world-toolbar{bottom:40px;left:8px;right:auto}
+.is-booth-display .map-zoom button{min-width:40px;min-height:40px;font-size:13px}
+@media(min-width:901px) and (min-height:651px){
+ .tabletop-objects{display:grid;grid-template-columns:minmax(0,1fr) 300px;grid-template-rows:auto auto minmax(0,1fr) auto;gap:14px;padding:14px 16px 16px 0}
+ .tabletop-objects .field-readout{position:static;grid-column:2;grid-row:1}
+ .tabletop-objects .probability-line{position:static;grid-column:2;grid-row:2}
+ .tabletop-objects .lesson-ribbon{position:static;grid-column:2;grid-row:3;align-self:start;max-height:100%;overflow:auto;pointer-events:auto}
+ .tabletop-objects .table-dock{position:relative;grid-column:2;grid-row:4;right:auto;bottom:auto;align-self:end}
+ .tabletop-objects .booth-confirm{position:absolute;right:0;top:0;margin:0;font-size:12px}
+}
+
+/* Illustrations and copy have explicit columns, including the wall explanation. */
+.tile-inspector{display:grid;grid-template-columns:48px minmax(0,1fr);gap:12px;left:16px;top:16px;width:360px;max-width:calc(100% - 32px);max-height:calc(100% - 32px);overflow:auto;overscroll-behavior:contain;padding:24px 22px;border-radius:22px;animation:note-arrive .22s ease-out both}
+.tile-inspector>button{right:4px;top:4px;width:36px;min-height:36px;height:36px}
+.tile-inspector>.tile-rule-copy{min-width:0;flex:none}
+.tile-inspector strong{display:block;padding-right:12px;font-size:18px;line-height:1.5}
+.tile-inspector p{font-size:15px;line-height:1.8;margin:8px 0 0;color:var(--ink)}
+.tile-inspector>.zone-detail,.tile-inspector>small{grid-column:1/-1;font-size:13px!important;line-height:1.6}
+.tile-inspector>small{color:var(--muted)}
+.tile-rule-copy{min-width:0}
+.wall-example{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.wall-demo{display:flex;align-items:center;gap:5px;width:100%;max-width:245px}
+.wall-demo span{display:grid;place-items:center;width:42px;height:39px;flex:1;font-size:22px;border-radius:9px;background:var(--soft);color:var(--green)}
+.wall-demo i{font-style:normal;color:var(--green);font-size:21px}
+.wall-demo .wall-demo-wall{background:var(--wall);color:#fff}
+.wall-demo .wall-demo-stop{border:2px solid var(--green)}
+.wall-demo .wall-demo-block{color:var(--repel-line)}
+.wall-example>small{display:block;font-size:13px;color:var(--ink);margin-top:9px;line-height:1.6}
+.rules-dialog{width:min(920px,95vw);padding:28px}
+.rules-dialog .dialog-heading{top:-28px;gap:20px;align-items:center}
+.rules-dialog .dialog-heading h2{font-size:26px;line-height:1.4}
+.guide-intro,.guide-steps p,.zone-priority,.object-grid p{font-size:15px;line-height:1.8;color:var(--ink)}
+.object-grid{gap:28px;align-items:start}
+.object-grid article{display:grid;grid-template-columns:48px minmax(0,1fr);gap:14px}
+.object-grid strong{font-size:18px;line-height:1.5}
+.guide-tile{width:48px;height:46px}
+
+/* Short, event-driven movement: pickup, route invitation, and a landing bounce. */
+.roll-surface .cube-flight{transition:scale .18s,translate .18s,filter .18s}
+.roll-surface.held .cube-flight{scale:1.12;translate:0 -9px;filter:drop-shadow(0 14px 7px #06203024)}
+.roll-surface.held .cube-shadow{opacity:.2;transform:scale(.7)}
+.awaiting-roll .idle-dice .table-die{animation:dice-invite .85s ease-in-out 3}
+.awaiting-roll .idle-dice .table-die:nth-child(2){animation-delay:.12s}
+.awaiting-roll .idle-dice .table-die:nth-child(3){animation-delay:.24s}
+.awaiting-roll .idle-dice .table-die:nth-child(4){animation-delay:.36s}
+.roll-surface.held .table-die{animation:none}
+.board .hex.available{stroke:var(--direction);stroke-width:2.7}
+.board .hex.preview{stroke:var(--direction);fill:color-mix(in srgb,var(--direction) 16%,var(--tile));stroke-width:4}
+.board .face-label{fill:var(--direction);font-weight:800}
+.board .endpoint-ring{stroke:var(--direction);animation:walk-invite .8s ease-out 3;transform-box:fill-box;transform-origin:center}
+.board g[role=button]:hover .hex{fill:color-mix(in srgb,var(--direction) 19%,var(--tile));stroke-width:4}
+.route-intent .route-preview{stroke:var(--direction)}
+.route-arrival{fill:none;stroke:var(--direction);stroke-width:2;transform-box:fill-box;transform-origin:center;animation:route-arrive .55s ease-out both}
+.cell-body{transform-box:fill-box;transform-origin:center;animation:cell-settle .42s cubic-bezier(.2,.7,.3,1) both}
+.cell-directions circle{fill:var(--surface)!important;stroke:var(--direction)!important;stroke-width:1.6}
+.cell-directions text{fill:var(--direction);font-weight:850}
+.cell-directions .chosen circle{fill:var(--direction)!important}
+.cell-directions .chosen text{fill:var(--surface)}
+@keyframes dice-invite{0%,100%{translate:0 0;filter:none}42%{translate:0 -8px;filter:drop-shadow(0 0 5px #19bc8d77)}}
+@keyframes cue-nudge{0%,100%{translate:0 0}50%{translate:-4px 5px}}
+@keyframes cue-arrive{from{opacity:0;translate:0 7px}to{opacity:1;translate:0 0}}
+@keyframes note-arrive{from{opacity:0;translate:0 8px;scale:.98}to{opacity:1;translate:0 0;scale:1}}
+@keyframes cell-settle{0%{scale:1.12 .88}50%{scale:.96 1.05}100%{scale:1}}
+@keyframes walk-invite{0%,100%{opacity:.65;scale:1}50%{opacity:1;scale:1.12}}
+@keyframes route-arrive{from{opacity:1;scale:.35}to{opacity:0;scale:1.25}}
+
+/* A portrait table puts the dice within thumb reach below the board. */
+@media(max-width:900px) and (orientation:portrait){
+ .app.is-booth-display{padding:8px 12px;max-width:820px}
+ .is-booth-display .board-viewport:before{inset:180px 0 165px}
+ .is-booth-display .board-viewport .board{top:153px;left:50%;width:100%;height:calc(100% - 324px)}
+ .is-booth-display .board-viewport:has(.is-lesson) .board{top:263px;left:50%;width:100%;height:calc(100% - 434px)}
+ .tabletop-objects .field-readout{top:5px;left:8px;right:auto;width:calc(100% - 16px)}
+ .tabletop-objects .field-readout strong{font-size:16px}
+ .tabletop-objects .field-readout span:not(.field-orbit){font-size:13px}
+ .tabletop-objects .probability-line{top:79px;left:8px;right:8px;width:auto}
+ .probability-line>div{gap:8px}
+ .probability-line>small{font-size:12px;margin-bottom:7px}
+ .probability-line .direction-probability{font-size:15px}
+ .tabletop-objects .lesson-ribbon{top:162px;left:8px;right:8px;width:auto;max-width:none;padding-left:10px;display:grid;grid-template-columns:42px 1fr;gap:0 8px}
+ .tabletop-objects .lesson-step{font-size:11px;padding-top:3px}
+ .tabletop-objects .lesson-ribbon strong{font-size:16px;margin:0 45px 4px 0;padding:0}
+ .tabletop-objects .lesson-ribbon p{font-size:14px;line-height:1.55;margin:0}
+ .tabletop-objects .lesson-ribbon button{position:absolute;right:0;top:-5px;font-size:11px;min-height:36px;margin:0}
+ .tabletop-objects .table-dock{left:8px;right:8px;bottom:8px;width:auto;height:154px;display:grid;grid-template-columns:1fr 1fr;gap:10px 18px;align-content:center;align-items:center}
+ .action-cue{grid-column:1/-1;font-size:18px;gap:8px;justify-self:center;line-height:1.3}
+ .action-cue>span{font-size:23px;rotate:-90deg}
+ .tabletop-objects .physical-tray{min-height:88px}
+ .tabletop-objects .roll-surface{min-height:95px;padding:0;gap:14px}
+ .tabletop-objects .physical-die{--size:39px}
+ .tabletop-objects .cube-side{padding:7px;gap:3px}
+ .cube-side .cube-pip{width:5px;height:5px}
+ .tabletop-objects .idle-dice,.tabletop-objects .rolled-dice{gap:13px}
+ .tabletop-objects .rolled-token{min-width:44px;min-height:76px;padding:4px 0;gap:12px}
+ .tabletop-objects .rolled-token>span:last-child{font-size:13px}
+ .tabletop-objects .dice-invitation{font-size:12px!important}
+ .tabletop-objects .booth-command{min-height:0}
+ .tabletop-objects .booth-command p,.tabletop-objects .booth-command .booth-choose-hint,.tabletop-objects .booth-prediction strong{font-size:14px;line-height:1.55}
+ .tabletop-objects .booth-prediction span,.tabletop-objects .booth-choose-hint span,.tabletop-objects .direct-hint{font-size:12px}
+ .tabletop-objects .booth-confirm{font-size:13px;min-height:44px;margin:0}
+ .is-booth-display .world-toolbar{left:auto;right:8px;bottom:193px}
+ .tile-inspector{top:12px;left:8px;width:360px;max-width:calc(100% - 16px)}
+}
+@media(max-width:600px) and (orientation:portrait){
+ .app.is-booth-display{padding:6px 8px max(6px,env(safe-area-inset-bottom))}
+ .is-booth-display .board-viewport .board{top:150px;height:calc(100% - 319px)}
+ .is-booth-display .board-viewport:has(.is-lesson) .board{top:251px;height:calc(100% - 420px)}
+ .tabletop-objects .table-dock{height:157px;grid-template-columns:1fr;gap:6px;bottom:6px}
+ .action-cue{grid-column:auto;justify-self:start;font-size:18px}
+ .tabletop-objects .physical-tray{min-height:64px}
+ .tabletop-objects .roll-surface{min-height:75px;gap:11px;padding:5px 0 0}
+ .tabletop-objects .physical-die{--size:41px}
+ .tabletop-objects .idle-dice,.tabletop-objects .rolled-dice{gap:25px}
+ .tabletop-objects .rolled-token{min-width:44px;min-height:70px;padding:0;gap:9px}
+ .tabletop-objects .booth-command{text-align:center}
+ .tabletop-objects .booth-command p,.tabletop-objects .booth-command .booth-choose-hint{font-size:13px}
+ .tabletop-objects .booth-prediction strong{font-size:14px}
+ .tabletop-objects .booth-confirm{position:absolute;right:0;top:0;font-size:12px}
+ .tabletop-objects .direct-hint{display:none}
+ .tabletop-objects .cancel-reason{font-size:12px;margin-top:2px}
+ .tabletop-objects .lesson-ribbon{grid-template-columns:1fr;padding-left:10px}
+ .tabletop-objects .lesson-step{display:none}
+ .is-booth-display .legend{gap:8px;font-size:11px;min-height:31px}
+ .is-booth-display .board-score>span{font-size:12px}
+ .is-booth-display .board-score b{font-size:31px}
+ .is-booth-display .turn-counter{font-size:12px!important}
+ .guide-entry,.is-booth-display .header-menu>summary{font-size:13px}
+ .rules-dialog{padding:20px}
+ .rules-dialog .dialog-heading{top:-20px}
+ .object-grid{grid-template-columns:1fr}
+ .tile-inspector{padding:23px 18px;grid-template-columns:44px minmax(0,1fr)}
+}
+/* Short landscape screens use all three margins, with readable scrollable teaching. */
+@media(orientation:landscape) and (max-height:650px){
+ .app.is-booth-display{padding:5px 10px}
+ .is-booth-display .board-viewport .board,.is-booth-display .board-viewport:has(.is-lesson) .board{top:0;left:47%;width:49%;height:100%}
+ .is-booth-display .board-viewport:before{inset:0 26% 0 22%}
+ .tabletop-objects .field-readout{top:2px;left:4px;right:auto;width:21%;max-width:none}
+ .tabletop-objects .field-readout strong{font-size:14px}
+ .tabletop-objects .field-readout strong b{font-size:19px}
+ .tabletop-objects .field-readout span:not(.field-orbit){font-size:12px;line-height:1.5}
+ .tabletop-objects .probability-line{left:auto;right:4px;top:1px;width:25%}
+ .probability-line>small{font-size:11px;margin-bottom:5px}
+ .probability-line>div{grid-template-columns:repeat(3,1fr);gap:5px}
+ .probability-line>div>.direction-reading{flex-direction:row;gap:4px;padding:0;justify-content:center}
+ .probability-line .direction-key b{width:18px;height:18px;font-size:11px}
+ .direction-key i{font-size:13px}
+ .probability-line .direction-probability{font-size:12px}
+ .tabletop-objects .lesson-ribbon{top:90px;left:4px;right:auto;width:21%;max-height:calc(100% - 94px);overflow:auto;pointer-events:auto;padding-left:8px}
+ .tabletop-objects .lesson-ribbon strong{font-size:14px;line-height:1.45;margin:4px 0}
+ .tabletop-objects .lesson-ribbon p{font-size:12px;line-height:1.6}
+ .tabletop-objects .lesson-ribbon button{font-size:12px}
+ .tabletop-objects .lesson-step{font-size:11px}
+ .tabletop-objects .table-dock{left:auto;right:4px;bottom:3px;top:99px;width:25%;height:auto;gap:7px;justify-content:center}
+ .action-cue{font-size:16px;gap:6px}
+ .action-cue>span{font-size:20px}
+ .tabletop-objects .physical-tray{min-height:57px}
+ .tabletop-objects .physical-die{--size:34px}
+ .tabletop-objects .cube-side{padding:6px;gap:2px}
+ .cube-side .cube-pip{width:4px;height:4px}
+ .tabletop-objects .roll-surface{min-height:75px;gap:12px;padding:0}
+ .tabletop-objects .idle-dice,.tabletop-objects .rolled-dice{gap:8px}
+ .tabletop-objects .rolled-token{min-width:44px;min-height:60px;padding:0;gap:9px}
+ .tabletop-objects .rolled-token>span:last-child{font-size:12px}
+ .tabletop-objects .dice-invitation{font-size:11px!important}
+ .tabletop-objects .booth-command{min-height:0;text-align:left}
+ .tabletop-objects .booth-command p,.tabletop-objects .booth-command .booth-choose-hint,.tabletop-objects .booth-prediction strong{font-size:12px;line-height:1.5}
+ .tabletop-objects .booth-prediction span,.tabletop-objects .booth-choose-hint span,.tabletop-objects .direct-hint{font-size:11px}
+ .tabletop-objects .direct-hint{display:none}
+ .tabletop-objects .booth-confirm{font-size:12px;min-height:44px;margin:0}
+ .tabletop-objects .cancel-reason{font-size:11px;margin:0}
+ .is-booth-display .legend{font-size:11px;min-height:24px}
+ .is-booth-display .world-toolbar{left:22%;right:auto;bottom:28px}
+ .tile-inspector{top:4px;left:4px;width:350px;max-height:calc(100% - 8px)}
+}
+@media(prefers-reduced-motion:reduce){
+ .action-cue,.action-cue>span,.awaiting-roll .idle-dice .table-die,.board .endpoint-ring,.route-arrival,.cell-body,.tile-inspector{animation:none!important}
+ .route-arrival{display:none}.roll-surface .cube-flight,.probability-line .direction-reading{transition:none}
+ .roll-surface.held .cube-flight{scale:1;translate:0 0}
+}

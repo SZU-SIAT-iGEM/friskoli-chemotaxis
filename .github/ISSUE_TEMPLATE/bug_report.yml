@@ -1,0 +1,29 @@
+name: Bug report
+description: Report a reproducible gameplay or interface problem.
+body:
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Actual and expected behavior
+      description: What happened, and what should have happened?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Include map size/seed, cell type, language, and dice if relevant.
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Version and environment
+      placeholder: Release, browser version, OS, viewport or device, offline or hosted
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Screenshots or exported run
+      description: Remove personal information before sharing.

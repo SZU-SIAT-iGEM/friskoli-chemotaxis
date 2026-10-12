@@ -1,0 +1,31 @@
+import {useRef,useState,type CSSProperties} from 'react';
+import {ARROWS,LESSON_FACES,canRescue,diceCount,lockedDice,forecast,pathFor,probabilities,repulsionChange,stuck,zone,type Game} from './game/engine';
+import type {Translate} from './i18n';
+import DiceCube from './DiceCube';
+import {directionStyle} from './directions';
+type Props={game:Game;t:Translate;rolling:boolean;busy:boolean;selectedFace:number|null;choice:ReturnType<typeof forecast>|null;onSelect:(face:number)=>void;onRoll:()=>void;onConfirm:()=>void;onRescue:()=>void;onSkip:()=>void};
+export default function BoothControls({game,t,rolling,busy,selectedFace,choice,onSelect,onRoll,onConfirm,onRescue,onSkip}:Props){
+ const choosing=game.phase==='choose'&&!rolling&&!busy,p=probabilities(game),count=diceCount(game),z=zone(game);
+ const drag=useRef<{x:number;y:number;id:number}|null>(null),[offset,setOffset]=useState({x:0,y:0}),[held,setHeld]=useState(false);
+ return <div className={`booth-controls tabletop-objects ${rolling?'is-rolling':''} ${game.lesson?'is-lesson':''}`} role="group" aria-label={t('boardControls')}>
+  <div className={`field-readout zone-${z}`}><span className="field-orbit"/><div><strong>{t(z)} <b>{count}</b> {t('diceUnit')}</strong><span>{t(z==='repellent'?'repelEffect':z==='depleted'?'depletedEffect':z==='rich'?'richEffect':'normalEffect')}</span></div></div>
+  <div className="probability-line" aria-label={t('perDieProbability')}><small>{t(game.lesson?'demoFaces':'perDieProbability')}</small><div>{ARROWS.map((arrow,i)=><span key={i} style={directionStyle(i+1)} className={`direction-reading ${selectedFace===i+1?'selected':''} ${z==='repellent'&&repulsionChange(game,i+1)>0?'inward-risk':''}`} title={t('direction',{face:i+1,arrow})}><span className="direction-key"><b>{i+1}</b><i>{arrow}</i></span><strong className="direction-probability">{game.lesson?'—':`${(p[i]*100).toFixed(1)}%`}</strong></span>)}</div></div>
+  {game.lesson&&<div className="lesson-ribbon" role="status"><span className="lesson-step">0{game.moves+1} / 06</span><div><strong>{t(`tableLesson${game.moves+1}Title`)}</strong><p>{t(`tableLesson${game.moves+1}Body`)}</p></div><button className="text-button" onClick={onSkip}>{t('skipLesson')}</button></div>}
+  <div className={`table-dock ${game.phase==='ready'?'awaiting-roll':choosing?'awaiting-move':''}`}><div className="action-cue" key={`${game.rolls}-${game.phase}`}><span aria-hidden="true">{game.phase==='ready'?'↙':'↖'}</span><strong>{rolling?t('rolling'):t(game.phase==='ready'?(game.moves?'rollAgainPrompt':'rollPrompt'):stuck(game)?(canRescue(game)?'rescue':'wait'):'movePrompt')}</strong></div><div className="physical-tray" role="group" aria-label={t('diceTrayLabel')}>
+   {game.phase==='ready'?<div className={`roll-surface ${held?'held':''}`} role="button" tabIndex={busy||rolling?-1:0} aria-disabled={busy||rolling} aria-label={t(game.lesson?'rollDemo':'roll',{count})}
+    onKeyDown={e=>{if((e.key==='Enter'||e.key===' ')&&!busy&&!rolling){e.preventDefault();e.stopPropagation();onRoll();}}}
+    onPointerDown={e=>{if(busy||rolling||e.button!==0||drag.current)return;e.currentTarget.setPointerCapture(e.pointerId);drag.current={x:e.clientX,y:e.clientY,id:e.pointerId};setHeld(true);}}
+    onPointerMove={e=>{if(drag.current?.id===e.pointerId)setOffset({x:Math.max(-85,Math.min(85,e.clientX-drag.current.x)),y:Math.max(-90,Math.min(40,e.clientY-drag.current.y))});}}
+    onPointerUp={e=>{if(drag.current?.id!==e.pointerId)return;drag.current=null;setHeld(false);setOffset({x:0,y:0});e.currentTarget.releasePointerCapture(e.pointerId);onRoll();}}
+    onPointerCancel={()=>{drag.current=null;setHeld(false);setOffset({x:0,y:0});}}
+    onLostPointerCapture={()=>{drag.current=null;setHeld(false);setOffset({x:0,y:0});}}
+   ><span className="idle-dice" style={{transform:`translate(${offset.x}px,${offset.y}px)`}}>{Array.from({length:count},(_,i)=><span className={`table-die ${z==='rich'&&i===3?'bonus-die':''}`} key={i} style={{'--scatter':`${[3,-5,6,-2][i]}px`} as CSSProperties}><DiceCube face={i<lockedDice(game)?0:i+1} index={i}/>{z==='rich'&&i===3&&<small className="bonus-mark">+1</small>}</span>)}</span><span className="dice-invitation">{t('tossHint')}</span></div>:<div className="rolled-dice" role="group" aria-label={rolling?t('rolling'):t('pool',{count:game.dice.length})}>{game.dice.map((face,i)=>{
+    const enabled=choosing&&face>0&&pathFor(game,face).length>0&&(!game.lesson||face===LESSON_FACES[game.moves]);
+    return <button className={`rolled-token table-die ${face===selectedFace?'selected':''}`} key={i} style={{...directionStyle(face),'--scatter':`${[3,-5,6,-2][i]}px`} as CSSProperties} disabled={!enabled} onClick={()=>onSelect(face)} aria-label={face===0?t('lockedDie'):face<0?t('negatedFace',{face:-face}):t('diceResult',{face,arrow:ARROWS[face-1]})}><DiceCube face={face} index={i} rolling={rolling}/><span className={rolling?'pending-face':''}>{face===0?t('stayShort'):face<0?t('cancelShort'):`${face} ${ARROWS[face-1]}`}</span></button>;
+   })}</div>}
+  </div><div className="booth-command" aria-live="polite">
+   {rolling?<p>{t('rolling')}</p>:game.phase==='ready'?<p>{game.moves>0?t(`event_${game.event}`,{count:game.eventN}):t('tableInvitation')}</p>:stuck(game)?<><p>{t(canRescue(game)?'rescueHelp':'stuck')}</p><button className="text-button table-rescue" disabled={busy} onClick={onRescue}>{t(canRescue(game)?'rescue':'wait')}</button></>:choice&&selectedFace!==null?<><p className="booth-prediction"><strong>{t('previewSummary',{steps:choice.path.length,food:choice.food,points:choice.gain})}</strong><span>{t(choice.won?'previewWon':choice.lost?'previewLost':choice.refuel?'previewRefuel':'previewEnd')}{choice.broke?` · ${t('previewBreak')}`:''}</span></p><span className="direct-hint">{t('tapAgainHint')}</span><button className="text-button booth-confirm" disabled={busy} onClick={onConfirm}>{t('executeShort')} ↵</button></>:<p className="booth-choose-hint">{t('tableChooseHint')}<span>{t('directMoveHint')}</span></p>}
+   {!rolling&&game.phase==='choose'&&game.dice.some(d=>d<0)&&<small className="cancel-reason" title={t('cancelReason',{face:Math.abs(game.dice.find(d=>d<0)!)})}>{t('negatedFace',{face:Math.abs(game.dice.find(d=>d<0)!)})} · {t('inwardFirst')}</small>}
+  </div></div>
+ </div>;
+}
